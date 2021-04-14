@@ -36,22 +36,29 @@ func accountServiceBuilder() *AccountService {
 	return accountService
 }
 
-func (accountService AccountService) ListAllAccounts() *[]Account {
+func (accountService *AccountService) ListAllAccounts() *[]Account {
 	return (*accountRepository).List()
 }
 
-func (accountService AccountService) GetAccount(id uuid.UUID) *Account {
+func (accountService *AccountService) GetAccount(id uuid.UUID) *Account {
 	return (*accountRepository).Get(id)
 }
 
-func (accountService AccountService) GetCheckByCredentials(CPF string, secret string) *Account {
+func (accountService *AccountService) GetCheckByCredentials(CPF string, secret string) *Account {
 	return (*accountRepository).GetCheckByCredentials(CPF, secret)
 }
 
-func (accountService AccountService) CreateAccount(account Account) string {
+func (accountService *AccountService) UpdateAccount(account Account) {
+	(*accountRepository).Update(account)
+}
+
+func (accountService *AccountService) CreateAccount(account *Account) string {
 
 	account.ID = uuid.Generate().String()
-	account.Balance = 0
+
+	if account.Balance < 0 {
+		account.Balance = 0
+	}
 
 	hash := sha1.New()
 	hash.Write([]byte(fmt.Sprintf("%s.%s", account.Name, account.CPF)))
@@ -60,7 +67,7 @@ func (accountService AccountService) CreateAccount(account Account) string {
 	account.Secret = secret
 	account.CreatedAt = time.Now()
 
-	(*accountRepository).Save(account)
+	(*accountRepository).Save(*account)
 
 	return secret
 }

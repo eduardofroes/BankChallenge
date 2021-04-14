@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// CheckError x
+// CheckError is responsible to throw errors.
 func CheckError(err error, message string) {
 	if err != nil {
 		LogError(err, message)
@@ -14,14 +14,14 @@ func CheckError(err error, message string) {
 	}
 }
 
-// LogError x
+// LogError is responsible to log errors.
 func LogError(err error, message string) {
 	if err != nil {
 		log.Println("Error:", message, err)
 	}
 }
 
-//HandleError x
+//HandleError is responsible to handle error http to the client.
 func HandleError(w http.ResponseWriter) {
 	r := recover()
 

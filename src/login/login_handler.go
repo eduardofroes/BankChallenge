@@ -18,7 +18,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&login)
 
 	if err != nil {
-		panic("Could not convert the login body.")
+		commons.HandleBadRequest(w, "Could not convert the login body.")
+		return
 	}
 
 	token := loginService.Login(login)

@@ -39,7 +39,7 @@ func (loginService *LoginService) Login(login Login) *string {
 
 	if account != nil {
 
-		token, err := commons.GenerateToken(login.CPF, login.Secret)
+		token, err := commons.GenerateToken(account.ID, login.CPF, login.Secret)
 
 		commons.CheckError(err, "Error in generates the login token.")
 

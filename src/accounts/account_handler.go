@@ -28,7 +28,7 @@ func ListAccountsHandler(w http.ResponseWriter, r *http.Request) {
 
 		commons.WriteJSON(w, accounts, 200)
 	} else {
-		commons.Unauthorized(w, "Resource unauthorized.")
+		commons.HandleUnauthorized(w, "Resource unauthorized.")
 	}
 }
 
@@ -42,7 +42,12 @@ func GetAccountBalanceHandler(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		accountID := vars["id"]
 
-		accountUUID, _ := uuid.Parse(accountID)
+		accountUUID, err := uuid.Parse(accountID)
+
+		if err != nil {
+			commons.HandleBadRequest(w, "Error to parse account id.")
+			return
+		}
 
 		account := accountService.GetAccount(accountUUID)
 
@@ -57,7 +62,7 @@ func GetAccountBalanceHandler(w http.ResponseWriter, r *http.Request) {
 
 		commons.WriteJSON(w, body, 200)
 	} else {
-		commons.Unauthorized(w, "Resource unauthorized.")
+		commons.HandleUnauthorized(w, "Resource unauthorized.")
 	}
 
 }
@@ -73,10 +78,11 @@ func CreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&account)
 
 	if err != nil {
-		panic("Could not convert the account body.")
+		commons.HandleBadRequest(w, "Could not convert the account body.")
+		return
 	}
 
-	secret := accountService.CreateAccount(account)
+	secret := accountService.CreateAccount(&account)
 
 	body := map[string]string{
 		"secret": secret,

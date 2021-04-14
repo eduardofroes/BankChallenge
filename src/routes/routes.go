@@ -3,6 +3,7 @@ package routes
 import (
 	"bankchallenge/accounts"
 	"bankchallenge/login"
+	"bankchallenge/transfers"
 	"net/http"
 )
 
@@ -39,5 +40,17 @@ var routes = Routes{
 		"POST",
 		"/login",
 		login.LoginHandler,
+	},
+	route{
+		"Tranfer money to another account.",
+		"POST",
+		"/transfers",
+		transfers.TransferHandler,
+	},
+	route{
+		"List tranfers of an account.",
+		"GET",
+		"/transfers",
+		transfers.ListTransfersHandler,
 	},
 }

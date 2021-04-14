@@ -9,11 +9,12 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-func GenerateToken(CPF string, secret string) (*string, error) {
+func GenerateToken(accountId string, CPF string, secret string) (*string, error) {
 
 	atClaims := jwt.MapClaims{}
 
 	atClaims["authorized"] = true
+	atClaims["account_id"] = accountId
 	atClaims["cpf"] = CPF
 	atClaims["secret"] = secret
 	atClaims["exp"] = time.Now().Add(time.Minute * 15).Unix()
@@ -41,13 +42,13 @@ func ExtractToken(autorization string) string {
 	return ""
 }
 
-func ValidateToken(autorization string) bool {
+func ValidateToken(authorization string) bool {
 
-	if autorization == "" {
+	if authorization == "" {
 		return false
 	}
 
-	token := verifyToken(autorization)
+	token := verifyToken(authorization)
 
 	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
 		return false
@@ -56,8 +57,26 @@ func ValidateToken(autorization string) bool {
 	return true
 }
 
-func verifyToken(autorization string) *jwt.Token {
-	tokenString := ExtractToken(autorization)
+func ExtractMetadata(authorization string) *string {
+	token := verifyToken(authorization)
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if ok && token.Valid {
+		accountID, ok := claims["account_id"].(string)
+
+		if !ok {
+			return nil
+		} else {
+			return &accountID
+		}
+	} else {
+		return nil
+	}
+}
+
+func verifyToken(authorization string) *jwt.Token {
+	tokenString := ExtractToken(authorization)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
