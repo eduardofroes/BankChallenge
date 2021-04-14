@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "f616db26-5fc5-4ea8-8b7b-34f79730573d",
+		"name": "BankChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Ramos Valdes\",\n\t\"cpf\": \"029.271.430-05\",\n\t\"balance\": 1000\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/accounts",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer To Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMjAwY2JmNDQtNzc2ZC00ODEzLWJjM2MtZjRjMjUyZmU1Y2Y5IiwiYXV0aG9yaXplZCI6dHJ1ZSwiY3BmIjoiMzcwLjI0NS4zNTgtMDYiLCJleHAiOjE2MTg0Mzk5NDcsInNlY3JldCI6ImZhYmZlOTA2MGIwY2EyZDFhM2IxOGNlMjg3NTc2OTc5ODI3YWNlZmMifQ._7MFfmUaAp7W2NvXxDabZ9taJbuNjUN-BNi3c7u4OYo"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"account_destination_id\": \"8c8d05a3-4ed6-4dde-a957-6ec8f6b87c18\",\n\t\"amount\": 150\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/transfers",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cpf\": \"000.000.000-00\",\n\t\"secret\": \"95de594b088789a52b90065df6e9f31c37e08330\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Accounts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiZDczNGVlYTgtZTAxNy00ZTU3LWJiNDEtMDdiOTAxMjk5NDJlIiwiYXV0aG9yaXplZCI6dHJ1ZSwiY3BmIjoiOTI2LjcyMi4zMzAtNTUiLCJleHAiOjE2MTg0NDM2MzQsInNlY3JldCI6IjcyZWNlODgzYjdhYzRjMDkzMzQ5NzQ4NTViODUwYmNhYTA3MWE2OGMifQ.V3XgnbconuX-AngD2CLPM3KjQYK4tMMmlGBffCWidsw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Eduardo de Moraes Froes\",\n\t\"cpf\": \"000.000.000-00\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/accounts",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Transfers of an Accounts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Eduardo de Moraes Froes\",\n\t\"cpf\": \"000.000.000-00\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/accounts",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account Balance",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Eduardo de Moraes Froes\",\n\t\"cpf\": \"000.000.000-00\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/accounts",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

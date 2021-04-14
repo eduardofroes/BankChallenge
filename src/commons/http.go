@@ -49,10 +49,11 @@ func HandleBadRequest(w http.ResponseWriter, message string) {
 }
 
 //HandleNotAcceptable function is responsible for send not acceptable http status code.
-func HandleNotAcceptable(w http.ResponseWriter, message string) {
+func HandleNotAcceptable(w http.ResponseWriter, message string, code string) {
 
 	body := map[string]string{
 		"message": message,
+		"code":    code,
 	}
 
 	WriteJSON(w, body, 406)
@@ -66,7 +67,7 @@ func TreatCode(w http.ResponseWriter, code string) {
 		HandleBadRequest(w, getMessageCode(code))
 		break
 	case "FOUNDS_001":
-		HandleNotAcceptable(w, getMessageCode(code))
+		HandleNotAcceptable(w, getMessageCode(code), code)
 		break
 	case "TRANFER_001":
 		body := map[string]string{
