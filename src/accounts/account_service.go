@@ -44,10 +44,14 @@ func (accountService AccountService) GetAccount(id uuid.UUID) *Account {
 	return (*accountRepository).Get(id)
 }
 
+func (accountService AccountService) GetCheckByCredentials(CPF string, secret string) *Account {
+	return (*accountRepository).GetCheckByCredentials(CPF, secret)
+}
+
 func (accountService AccountService) CreateAccount(account Account) string {
 
 	account.ID = uuid.Generate().String()
-	account.Balance = 1
+	account.Balance = 0
 
 	hash := sha1.New()
 	hash.Write([]byte(fmt.Sprintf("%s.%s", account.Name, account.CPF)))

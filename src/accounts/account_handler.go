@@ -2,6 +2,7 @@ package accounts
 
 import (
 	"bankchallenge/commons"
+
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -15,41 +16,50 @@ func ListAccountsHandler(w http.ResponseWriter, r *http.Request) {
 
 	defer commons.HandleError(w)
 
-	GetAccountService()
+	if commons.ValidateToken(r.Header.Get("authorization")) {
+		GetAccountService()
 
-	accounts := accountService.ListAllAccounts()
+		accounts := accountService.ListAllAccounts()
 
-	if accounts == nil {
-		commons.HandleNotFound(w, "No accounts was registred.")
-		return
+		if accounts == nil {
+			commons.HandleNotFound(w, "No accounts was registred.")
+			return
+		}
+
+		commons.WriteJSON(w, accounts, 200)
+	} else {
+		commons.Unauthorized(w, "Resource unauthorized.")
 	}
-
-	commons.WriteJSON(w, accounts, 200)
 }
 
 // GetAccountBalanceHandler get the balance from an account.
 func GetAccountBalanceHandler(w http.ResponseWriter, r *http.Request) {
 	defer commons.HandleError(w)
 
-	GetAccountService()
+	if commons.ValidateToken(r.Header.Get("authorization")) {
+		GetAccountService()
 
-	vars := mux.Vars(r)
-	accountID := vars["id"]
+		vars := mux.Vars(r)
+		accountID := vars["id"]
 
-	accountUUID, _ := uuid.Parse(accountID)
+		accountUUID, _ := uuid.Parse(accountID)
 
-	account := accountService.GetAccount(accountUUID)
+		account := accountService.GetAccount(accountUUID)
 
-	if account == nil {
-		commons.HandleNotFound(w, fmt.Sprintf("Account id %v not found", accountID))
-		return
+		if account == nil {
+			commons.HandleNotFound(w, fmt.Sprintf("Account id %v not found", accountID))
+			return
+		}
+
+		body := map[string]float64{
+			"balance": account.Balance,
+		}
+
+		commons.WriteJSON(w, body, 200)
+	} else {
+		commons.Unauthorized(w, "Resource unauthorized.")
 	}
 
-	body := map[string]float64{
-		"balance": account.Balance,
-	}
-
-	commons.WriteJSON(w, body, 200)
 }
 
 // CreateAccountHandler is responsible for create user account.

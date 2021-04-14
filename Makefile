@@ -32,6 +32,7 @@ stop-bank:
 .PHONY: run-psql
 run-psql:
 	docker run --name postgres --rm \
+	 -d \
 	 -h postgres \
 	 -v ${CURRENT_DIR}/sql:/docker-entrypoint-initdb.d/ \
 	 -e POSTGRES_PASSWORD=admin \

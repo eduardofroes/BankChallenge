@@ -7,8 +7,6 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
-	"log"
-
 	"sigs.k8s.io/yaml"
 
 	_ "github.com/lib/pq"
@@ -51,8 +49,6 @@ func databaseBuilder() *sql.DB {
 	database, err := sql.Open(databaseConfig.DriveName, dataSourceName)
 
 	commons.CheckError(err, "Error to opening the database connection.")
-
-	log.Println("Database connected.")
 
 	return database
 }
