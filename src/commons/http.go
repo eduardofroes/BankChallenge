@@ -64,6 +64,7 @@ func TreatCode(w http.ResponseWriter, code string) {
 	switch code {
 	case "ACCOUNT_001":
 	case "ACCOUNT_002":
+	case "TRANSFER_002":
 		HandleBadRequest(w, getMessageCode(code))
 		break
 	case "FOUNDS_001":
@@ -81,10 +82,11 @@ func TreatCode(w http.ResponseWriter, code string) {
 func getMessageCode(code string) string {
 
 	codeMap := map[string]string{
-		"FUNDS_001":   "Insufients funds.",
-		"ACCOUNT_001": "Origin account not found.",
-		"ACCOUNT_002": "Destination account not found.",
-		"TRANFER_001": "Transfer executed with sucessfuly.",
+		"FUNDS_001":    "Insufients funds.",
+		"ACCOUNT_001":  "Origin account not found.",
+		"ACCOUNT_002":  "Destination account not found.",
+		"TRANSFER_001": "Transfer executed with sucessfuly.",
+		"TRANSFER_002": "Impossible to transfer to the same origin account.",
 	}
 
 	return codeMap[code]

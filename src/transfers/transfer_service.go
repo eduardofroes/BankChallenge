@@ -66,18 +66,22 @@ func (transferService *TransferService) TransferMoney(transfer Transfer) (string
 		return "ACCOUNT_002", false
 	}
 
-	accountOrigin.Balance -= transfer.Amount
-	accountDestination.Balance += transfer.Amount
+	if accountOrigin.ID != accountDestination.ID {
+		accountOrigin.Balance -= transfer.Amount
+		accountDestination.Balance += transfer.Amount
 
-	transferService.accountService.UpdateAccount(*accountOrigin)
-	transferService.accountService.UpdateAccount(*accountDestination)
+		transferService.accountService.UpdateAccount(*accountOrigin)
+		transferService.accountService.UpdateAccount(*accountDestination)
 
-	transfer.ID = uuid.Generate().String()
-	transfer.CreatedAt = time.Now()
+		transfer.ID = uuid.Generate().String()
+		transfer.CreatedAt = time.Now()
 
-	(*transferRepository).Save(transfer)
+		(*transferRepository).Save(transfer)
 
-	return "TRANFER_001", true
+		return "TRANSFER_001", true
+	} else {
+		return "TRANSFER_002", false
+	}
 }
 
 func (transferService *TransferService) GetAccountTransfers(accountId uuid.UUID) *[]Transfer {
