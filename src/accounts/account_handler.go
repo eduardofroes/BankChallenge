@@ -21,8 +21,12 @@ func ListAccountsHandler(w http.ResponseWriter, r *http.Request) {
 
 		accounts := accountService.ListAllAccounts()
 
-		if accounts == nil {
-			commons.HandleNotFound(w, "No accounts was registred.")
+		if len(*accounts) == 0 {
+			body := map[string]string{
+				"message": "No accounts was registred.",
+			}
+
+			commons.WriteJSON(w, body, 201)
 			return
 		}
 

@@ -75,11 +75,13 @@ func (accountRepository *AccountRepository) Get(id uuid.UUID) *Account {
 
 	err := accountRepository.database.QueryRow(fmt.Sprintf("SELECT id, name, cpf, secret, balance, created_at FROM accounts WHERE id = '%s'", id.String())).Scan(&account.ID, &account.Name, &account.CPF, &account.Secret, &account.Balance, &account.CreatedAt)
 
-	commons.CheckError(err, "Error in scan account data.")
-
 	defer accountRepository.database.Close()
 
-	return &account
+	if err != nil {
+		return nil
+	} else {
+		return &account
+	}
 }
 
 func (accountRepository *AccountRepository) GetCheckByCredentials(CPF string, secret string) *Account {
@@ -90,11 +92,13 @@ func (accountRepository *AccountRepository) GetCheckByCredentials(CPF string, se
 
 	err := accountRepository.database.QueryRow(fmt.Sprintf("SELECT id, name, cpf, secret, balance, created_at FROM accounts WHERE cpf ilike '%s' and secret ilike '%s'", CPF, secret)).Scan(&account.ID, &account.Name, &account.CPF, &account.Secret, &account.Balance, &account.CreatedAt)
 
-	commons.CheckError(err, "Error in scan account data.")
-
 	defer accountRepository.database.Close()
 
-	return &account
+	if err != nil {
+		return nil
+	} else {
+		return &account
+	}
 }
 
 func (accountRepository *AccountRepository) Save(account Account) {

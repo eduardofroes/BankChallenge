@@ -24,9 +24,13 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	token := loginService.Login(login)
 
-	body := map[string]string{
-		"token": *token,
-	}
+	if token != nil {
+		body := map[string]string{
+			"access_token": *token,
+		}
 
-	commons.WriteJSON(w, body, 200)
+		commons.WriteJSON(w, body, 200)
+	} else {
+		commons.HandleNotFound(w, "User not found.")
+	}
 }

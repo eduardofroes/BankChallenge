@@ -28,8 +28,13 @@ func ListTransfersHandler(w http.ResponseWriter, r *http.Request) {
 
 		transfers := transferService.GetAccountTransfers(accountUUID)
 
-		if transfers == nil {
-			commons.HandleNotFound(w, "No transfers was registred.")
+		if len(*transfers) == 0 {
+
+			body := map[string]string{
+				"message": "No transfers was registred.",
+			}
+
+			commons.WriteJSON(w, body, 201)
 			return
 		}
 
@@ -61,7 +66,7 @@ func TransferHandler(w http.ResponseWriter, r *http.Request) {
 
 		code, transferred := transferService.TransferMoney(transfer)
 
-		if !transferred {
+		if transferred {
 
 			body := map[string]string{
 				"message": fmt.Sprintf("Transferred to account id: %s.", transfer.AccountDestinationId),

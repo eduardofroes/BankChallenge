@@ -66,7 +66,7 @@ func (transferService *TransferService) TransferMoney(transfer Transfer) (string
 		return "ACCOUNT_002", false
 	}
 
-	if accountOrigin.ID != accountDestination.ID {
+	if accountOriginIdUUID.String() != accountDestinationUUID.String() {
 		accountOrigin.Balance -= transfer.Amount
 		accountDestination.Balance += transfer.Amount
 
